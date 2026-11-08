@@ -1,0 +1,16 @@
+{
+    "name": "vendor/td12",
+    "description": "Le meilleur autoload de tout les temps",
+    "autoload": {
+        "psr-4": {
+            "iutnc\\deefy\\": "src/classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "Maxime Deflou-Caron",
+            "email": "maxime.deflou-caron1@etu.univ-lorraine.fr"
+        }
+    ],
+    "require": {}
+}

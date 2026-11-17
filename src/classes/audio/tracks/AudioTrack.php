@@ -7,12 +7,12 @@ use \iutnc\deefy\exception as xpt;
 
 abstract class AudioTrack {
 
-	private string $genre; 
-	private int $duree = 0;
+	protected string $genre = ''; 
+	protected int $duree = 0;
 	
 	public function __construct(
-		private string $titre,
-		private string $chemin,
+		protected string $titre,
+		protected string $chemin,
 	) {}
 	
 	public function __toString() : string {

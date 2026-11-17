@@ -3,6 +3,7 @@
 namespace iutnc\deefy\action;
 use iutnc\deefy\audio\lists as lst;
 use iutnc\deefy\render as rdr;
+use iutnc\deefy\repo\DeefyRepository;
 
 class AddPlaylistAction extends Action {
     
@@ -26,6 +27,15 @@ class AddPlaylistAction extends Action {
             }
 
             $playlist = new lst\AudioList($nom);
+
+            try{
+                $repo = DeefyRepository::getInstance();
+                $repo->insererPlaylist($playlist);
+
+            }catch(\Exception $e){
+                return 'Erreur (AddPlaylistAction) : ' .  $e->getMessage();
+            }
+
             $_SESSION['playlist'] = $playlist;
 
             $render = new rdr\AudioListRenderer($playlist);

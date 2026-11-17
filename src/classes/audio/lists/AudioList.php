@@ -7,6 +7,7 @@ use \iutnc\deefy\audio\tracks as trk;
 class AudioList {
 
     private int $nb_pistes, $duree_totale = 0;
+    private int $id;
 
     public function __construct(private string $nom, private Array $pistes = []){
         
@@ -19,6 +20,18 @@ class AudioList {
     public function __get($at){
         if (property_exists($this, $at)) return $this->$at;
         return new xpt\InvalidPropertyNameException("Attribut introuvable !");
+    }
+
+    public function setIdPlayList($idplaylist): void{
+        $this->id = $idplaylist;
+    }
+
+    public function setDuree($temps): void{
+        $this->duree_totale = $temps;
+    }
+
+    public function setNbPistes($nb): void{
+        $this->nb_pistes = $nb;
     }
 
     public function addTrack(trk\AudioTrack $music) : void {

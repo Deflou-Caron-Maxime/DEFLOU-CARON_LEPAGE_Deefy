@@ -22,7 +22,7 @@ class AlbumTrack extends AudioTrack {
 	public function setArtiste(string $artiste) {
 		$this->artiste = $artiste;
 	}		
-	public function setAnnee(int $annee) {
+	public function setAnnee(string $annee) {
 		if ($annee > 2027) throw new xpt\InvalidPropertyValueException("Année trop grande");
 		$this->annee = $annee;
 	}

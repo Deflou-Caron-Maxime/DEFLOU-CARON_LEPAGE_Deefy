@@ -1,8 +1,10 @@
 <?php
 
 namespace iutnc\deefy\action;
-use iutnc\deefy\render as rdr;
 use iutnc\deefy\audio\tracks as trk;
+use iutnc\deefy\render as rdr;
+use iutnc\deefy\repo\DeefyRepository;
+
 
 class AddPodcastTrackAction extends Action {
     
@@ -27,29 +29,15 @@ class AddPodcastTrackAction extends Action {
                     <button type="submit">Valider</button>
                     HTML;
         } else {
-            $titre = $_POST['titre'];
-            $chemin = $_POST['chemin'];
-            $auteur = $_POST['auteur'];
-            if ($_POST['date'] === "") {
-                $date = date('d/m/Y');
-                
-            } else {
-                $date = $_POST['date'];   
-            }
-            
+            $titre = filter_var($_POST['titre'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
+            $chemin = filter_var($_POST['chemin'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
+            $auteur = filter_var($_POST['auteur'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $titre = filter_var($titre, FILTER_SANITIZE_SPECIAL_CHARS);
-            $chemin = filter_var($chemin, FILTER_SANITIZE_SPECIAL_CHARS);
-            $auteur = filter_var($auteur, FILTER_SANITIZE_SPECIAL_CHARS);
-            $date = filter_var($date, FILTER_SANITIZE_SPECIAL_CHARS);
+            $date = empty($_POST['date']) ? date('Y-m-d') : filter_var($_POST['date'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-        
-            if (isset($_FILES['fichier']) &&
-                $_FILES['fichier']['error'] !== UPLOAD_ERR_NO_FILE) {
-
+            if (isset($_FILES['fichier']) && $_FILES['fichier']['error'] !== UPLOAD_ERR_NO_FILE) {
                 $fichier = $_FILES['fichier'];
 
-            
                 if ($fichier['error'] !== UPLOAD_ERR_OK ||
                     !is_uploaded_file($fichier['tmp_name']) ||
                     substr($fichier['name'], -4) !== '.mp3' ||
@@ -58,19 +46,12 @@ class AddPodcastTrackAction extends Action {
                     return "Erreur : le fichier sélectionné n'est pas un MP3 valide.";
                 }
 
-
-                $nomAleatoire = uniqid();  
-                // dirname pour remonter de 3 dossiers depuis le dossier actuel          
+                $nomAleatoire = uniqid();
                 $upload_dir = dirname(__DIR__, 3) . '/audio/';
-
                 $destination = $upload_dir . $nomAleatoire . '.mp3';
 
-
                 if (move_uploaded_file($fichier['tmp_name'], $destination)) {
-
-                
                     $chemin = 'audio/' . $nomAleatoire . '.mp3';
-
                 } else {
                     return "Erreur lors de l'enregistrement du fichier.";
                 }
@@ -83,10 +64,17 @@ class AddPodcastTrackAction extends Action {
             $playlist = $_SESSION['playlist'];
             $playlist->addTrack($track);
 
+            try {
+                $repo = DeefyRepository::getInstance();
+                // On passe bien l'ID entier ($playlist->id) et non l'objet $playlist
+                $repo->insererPodcastTrack($track, $playlist->id);
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+
             $_SESSION['playlist'] = $playlist;
 
             $render = new rdr\AudioListRenderer($_SESSION['playlist']);
-
             return $render->render() . '<br><a href="?action=add-track">Ajouter encore une piste</a>';
         }
     }

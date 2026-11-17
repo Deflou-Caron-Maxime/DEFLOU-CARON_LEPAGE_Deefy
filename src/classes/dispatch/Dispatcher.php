@@ -30,19 +30,24 @@ class Dispatcher {
     }
 
     private function renderPage(string $html) : void {
-        echo "<!DOCTYPE HTML>
+        echo <<<HTML
+        <!DOCTYPE HTML>
         <html lang='fr'>
         <head>
             <title>Deefy</title>
         </head>
-        <body>
-        <h1>Deefy</h1>
-            $html
-            <a href='?action=clear-session'>Vider le cache</a>
-            <a href='?action=add-user'>Inscription</a>
-            <a href='?action=add-playlist'>Nouvelle playlist</a>
-            <a href='?action=default'>Accueil</a>
-        </body>
-        </html>";
+            <body>
+                <h1>Mini-Projet Deefy</h1>
+                <a href='?action=default'>Accueil</a>
+                <a href='?action=add-user'>Inscription</a>
+                <a href='?action=add-playlist'>Nouvelle playlist</a>
+                <a href='?action=show-playlist'>Voir vos playlists</a>
+                <a href='?action=clear-session'>Vider le cache</a>
+                <br>
+                <br>
+                $html
+            </body>
+        </html>
+        HTML;
     }
 }

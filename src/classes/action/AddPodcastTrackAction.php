@@ -72,7 +72,7 @@ class AddPodcastTrackAction extends Action {
                 return $e->getMessage();
             }
 
-            $_SESSION['playlist'] = $playlist;
+            $_SESSION['playlist'] = serialize($playlist);
 
             $render = new rdr\AudioListRenderer($_SESSION['playlist']);
             return $render->render() . '<br><a href="?action=add-track">Ajouter encore une piste</a>';

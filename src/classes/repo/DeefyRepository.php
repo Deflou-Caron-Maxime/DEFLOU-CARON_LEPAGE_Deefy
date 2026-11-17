@@ -184,4 +184,28 @@ class DeefyRepository {
 
         return $tracks;
     }
+
+    public function getPlaylistId(int $id): ?AudioList {
+        $query = "SELECT * FROM Playlist WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([':id' => $id]);
+        $ligne = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if (!$ligne) {
+            return null;
+        }
+
+        $albums = $this->getAlbumTrackPlaylist($id);
+        $podcasts = $this->getPodcastTrackPlaylist($id);
+        $pistes = array_merge($albums, $podcasts);
+
+        $playlist = new AudioList($ligne['nom'], $pistes);
+        $playlist->setIdPlayList((int)$ligne['id']);
+        $playlist->setDuree((int)($ligne['duree'] ?? 0));
+        $playlist->setNbPistes((int)($ligne['nbpistes'] ?? 0));
+
+        return $playlist;
+    }
+
+
 }

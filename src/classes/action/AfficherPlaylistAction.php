@@ -27,8 +27,11 @@ class AfficherPlaylistAction extends Action{
 
         $html = '';
         foreach($listePlaylistBD as $playlist){
-            $render = new rdr\AudioListRenderer($playlist);
-            $html .= $render->render() . "<br>";
+            $nom = $playlist->__get('nom');
+            $id = $playlist->__get('id');
+
+            $html .= "<div class='liste-playliste'>";
+            $html .= "<a href='?action=afficher-detail&id={$id}'>{$nom}</a><br>";
         }
         return $html;
     } 

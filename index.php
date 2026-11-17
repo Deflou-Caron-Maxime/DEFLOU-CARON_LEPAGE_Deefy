@@ -18,7 +18,8 @@ $dispatcher->addRoute('default', act\DefaultAction::class)
             ->addRoute('add-track', act\AddPodcastTrackAction::class)
             ->addRoute('add-user', act\AddUserAction::class)
             ->addRoute('clear-session', act\ViderSessionAction::class)
-            ->addRoute('show-playlist', act\AfficherPlaylistAction::class);
+            ->addRoute('show-playlist', act\AfficherPlaylistAction::class)
+            ->addRoute('afficher-detail', act\DetaillerPlaylistAction::class);
 
 $dispatcher->run();
 

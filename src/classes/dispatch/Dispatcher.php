@@ -42,6 +42,7 @@ class Dispatcher {
                 <a href='?action=add-user'>Inscription</a>
                 <a href='?action=add-playlist'>Nouvelle playlist</a>
                 <a href='?action=show-playlist'>Voir vos playlists</a>
+                <a href='?action=playlist-session'>Voir la playlist courante</a>
                 <a href='?action=clear-session'>Vider le cache</a>
                 <br>
                 <br>

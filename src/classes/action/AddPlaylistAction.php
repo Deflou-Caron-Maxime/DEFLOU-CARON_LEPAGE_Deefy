@@ -36,9 +36,10 @@ class AddPlaylistAction extends Action {
                 return 'Erreur (AddPlaylistAction) : ' .  $e->getMessage();
             }
 
-            $_SESSION['playlist'] = $playlist;
-
+            $_SESSION['playlist'] = serialize($playlist);
+            
             $render = new rdr\AudioListRenderer($playlist);
+
             return $render->render() . '<p><a href="?action=add-track">Ajouter une piste</a></p>';
              
         }

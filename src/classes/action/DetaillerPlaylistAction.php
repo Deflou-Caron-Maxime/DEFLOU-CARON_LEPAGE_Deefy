@@ -28,11 +28,13 @@ class DetaillerPlaylistAction extends Action{
         }catch (\Exception $e){
             return 'Erreur (DetaillerPlaylistAction) : ' . $e->getMessage();
         } 
-        $_SESSION['playlist'] = serialize($playlistCourante);
 
-        $html .= '<p>Playlist : </p><br>';
+        $html .=  '<p><a href="?action=add-track">Ajouter une piste à cette playliste </a></p>';
+        $html .= '<p>Playlist :' . $playlistCourante->__get('nom') . ' </p><br>';
         $renderPlaylist = new rdr\AudioListRenderer($playlistCourante);
         $html .= $renderPlaylist->render() . '<br>';
+
+        $_SESSION['playlist'] = serialize($playlistCourante);
 
         return $html;
     }

@@ -25,7 +25,8 @@ class AfficherPlaylistAction extends Action{
             $html = '<p>Pas de playlist enregistré</p>';
         }
 
-        $html = '';
+        $html = '<p>Cliquer sur une playlist remplacera votre playlist courante.'; 
+        $html .= '<p><a href="?action=add-track">Ajouter une piste</a></p>';
         foreach($listePlaylistBD as $playlist){
             $nom = $playlist->__get('nom');
             $id = $playlist->__get('id');

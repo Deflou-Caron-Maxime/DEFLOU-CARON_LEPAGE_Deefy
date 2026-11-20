@@ -61,21 +61,21 @@ class AddPodcastTrackAction extends Action {
             $track->setAuteur($auteur);
             $track->setDate($date);
 
-            $playlist = $_SESSION['playlist'];
+            $playlist = unserialize($_SESSION['playlist']);
             $playlist->addTrack($track);
 
             try {
                 $repo = DeefyRepository::getInstance();
-                // On passe bien l'ID entier ($playlist->id) et non l'objet $playlist
                 $repo->insererPodcastTrack($track, $playlist->id);
             } catch (\Exception $e) {
                 return $e->getMessage();
             }
 
-            $_SESSION['playlist'] = serialize($playlist);
+            $html = '<br><a href="?action=add-track">Ajouter encore une piste</a><br>';
 
-            $render = new rdr\AudioListRenderer($_SESSION['playlist']);
-            return $render->render() . '<br><a href="?action=add-track">Ajouter encore une piste</a>';
+            $render = new rdr\AudioListRenderer($playlist);
+            $_SESSION['playlist'] = serialize($playlist);
+            return $html . $render->render($playlist);
         }
     }
 
